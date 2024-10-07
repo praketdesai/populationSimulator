@@ -18,7 +18,6 @@ class Gene {
     Allele* allele2;
 
     Gene(Allele* all1, Allele* all2) : allele1(all1), allele2(all2)  {
-        // cout << "IS this function called, if so good, allele1 allele2 function called" << endl;
         all.push_back(all1);
         all.push_back(all2);
     };

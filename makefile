@@ -1,6 +1,5 @@
 build: 
-	@python3 script.py
-	@g++ Allele.h Gene.h Dna.h Archetype.h Encounter.h People.h Environments.h test.cpp
+	@g++ Object.h Allele.h Gene.h Dna.h Archetype.h People.h People.cpp Environment.h test.cpp
 	@./a.out
 run:
 	@python3 script.py

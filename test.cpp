@@ -7,21 +7,25 @@
 #include <vector>
 #include "Dna.h"
 #include "Archetype.h"
-#include "Environments.h"
+#include "Environment.h"
 
 using namespace std;
 
 int main() {
-    Environments env = Environments();
-    Peoples* peeps = env.envo[0]->peoples;
-    for (int i = 0; i < 100; i++) {
-        // peeps->createPerson("large", 20, "black");
-        // peeps->createPerson("lanky", 20, "nether");
-        // peeps->createPerson("large", 20, "brown");
-        peeps->createPerson("regular", 20, "white");
-        // peeps->createPerson("mantis", 20, "matriarch");
-        // peeps->createPerson("dwarf", 20, "dwarf");
+    Environment env = Environment(2);
+    vector<Peoples*> maping = {env.mapping[0][0]->peeps, env.mapping[0][1]->peeps, env.mapping[1][0]->peeps, env.mapping[1][1]->peeps};
+    Peoples* peeps = env.mapping[0][0]->peeps;
+    for (auto& peep : maping) {
+        for (int i = 0; i < 5000; i++) {
+            peep->createPerson("large", 20, "black");
+            peep->createPerson("lanky", 20, "nether");
+            peep->createPerson("large", 20, "brown");
+            peep->createPerson("regular", 20, "white");
+            peep->createPerson("mantis", 20, "matriarch");
+            peep->createPerson("dwarf", 20, "dwarf");
+        }
     }
+
 
     
 
@@ -37,18 +41,26 @@ int main() {
     // peeps->print_death_causes();
     
     char input;
-    cout << "View a person's attributes or do an action: ";
+    cout << "your options: \n r: simulate n years \n m: change sectors \n d: print demographics of the current sector \n p: print an individual person \n h: print the top people of a certain metric \n f: print someones children \n a: print someones parents \n u: print the stats of the academics \n s: save the current sector to a file \n";
+
     cin >> input;
     
     while (input != 'q') {
-        cout << endl << "year: " << env.envo[0]->year << endl;
-        if (input == 'r'){
+        cout << endl << "year: " << env.mapping[0][0]->year << endl;
+        if (input == 'm'){
+            int in;
+            cout << "what sector do you want to view (0, 1, 2, 3): ";
+            cin >> in;
+
+            cout << "welcome to the " << env.mapping[in/2][in%2]->name << "\n";
+            peeps = maping[in];
+        } else if (input == 'r'){
 
             int in;
 
             cout << "many years to simulate: ";
             cin >> in;
-            env.envo[0]->simulate(in);
+            env.simulate(in);
             int count = peeps->print_death_causes();
             // peeps->print_military();
 
@@ -112,8 +124,16 @@ int main() {
         } else if (input == 'u') {
             cout << "academics stats" << '\n';
             peeps->demographics(peeps->academics);
+        } else if (input == 's') {
+            cout << "what file do you want to print to?" << endl;
+            string filename;
+            cin >> filename;
+            peeps->populate_data(filename);
         }
-        cout << "Population: " << peeps->people.size() << endl;
+        cout << "Grand Population: " << peeps->people.size() << endl;
+        cout << "Current Population: " << peeps->alive_pop() << endl;
+        cout << "your options: \n r: simulate n years \n m: change sectors \n d: print demographics of the current sector \n p: print an individual person \n h: print the top people of a certain metric \n f: print someones children \n a: print someones parents \n u: print the stats of the academics \n s: save the current sector to a file \n";
+
         cin >> input;
 
 
